@@ -10,3 +10,7 @@
 	margin-top: 25px;
 	font-size: 42px;
 }
+
+.pointer:hover{
+	cursor:pointer;
+}
