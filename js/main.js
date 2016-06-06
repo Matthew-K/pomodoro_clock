@@ -5,6 +5,7 @@ model = {
 	breakLength: 0,
 	sessionLength: 0,
 	timer: 0,
+	running: false
 };
 
 
@@ -28,6 +29,14 @@ controller = {
 
 	updateTimer: function(num){
 		model.timer = num;
+	},
+
+	setRunning: function(boolean){
+		model.running = boolean;
+	},
+
+	isRunning: function(){
+		return model.running;
 	},
 
 	getBreakLength: function(){
@@ -89,56 +98,72 @@ view = {
 
 	breakSubtract: function(){
 		$("#breakSubtract").on("click", function(){
-			var breakLength = controller.getBreakLength();
-			if (breakLength > 0){
-				breakLength --;	
-				controller.updateBreakLength(breakLength);
-				$("#breakLength").text(breakLength);
-			} else {
+			if(controller.isRunning()){
 				return;
+			} else{
+				var breakLength = controller.getBreakLength();
+				if (breakLength > 0){
+					breakLength --;	
+					controller.updateBreakLength(breakLength);
+					$("#breakLength").text(breakLength);
+				} else {
+					return;
+				}
 			}
 		});
 	},
 
 	breakAdd: function(){
 		$("#breakAdd").on("click", function(){
-			var breakLength = controller.getBreakLength();
-			if (breakLength < 99){
-				breakLength ++;	
-				controller.updateBreakLength(breakLength);
-				$("#breakLength").text(breakLength);
-			} else {
+			if(controller.isRunning()){
 				return;
+			} else{
+				var breakLength = controller.getBreakLength();
+				if (breakLength < 99){
+					breakLength ++;	
+					controller.updateBreakLength(breakLength);
+					$("#breakLength").text(breakLength);
+				} else {
+					return;
+				}
 			}
 		});
 	},
 
 	sessionSubtract: function(){
 		$("#sessionSubtract").on("click", function(){
-			var sessionLength = controller.getSessionLength();
-			if (sessionLength > 0){
-				sessionLength --;	
-				controller.updateSessionLength(sessionLength);
-				controller.updateTimer(sessionLength);
-				$("#sessionLength").text(sessionLength);
-				$("#timer").text(sessionLength);
-			} else {
+			if(controller.isRunning()){
 				return;
+			} else{
+				var sessionLength = controller.getSessionLength();
+				if (sessionLength > 0){
+					sessionLength --;	
+					controller.updateSessionLength(sessionLength);
+					controller.updateTimer(sessionLength);
+					$("#sessionLength").text(sessionLength);
+					$("#timer").text(sessionLength);
+				} else {
+					return;
+				}
 			}
 		});
 	},
 
 	sessionAdd: function(){
 		$("#sessionAdd").on("click", function(){
-			var sessionLength = controller.getSessionLength();
-			if (sessionLength < 99){
-				sessionLength ++;	
-				controller.updateSessionLength(sessionLength);
-				controller.updateTimer(sessionLength);
-				$("#sessionLength").text(sessionLength);
-				$("#timer").text(sessionLength);
-			} else {
+			if(controller.isRunning()){
 				return;
+			} else{
+				var sessionLength = controller.getSessionLength();
+				if (sessionLength < 99){
+					sessionLength ++;	
+					controller.updateSessionLength(sessionLength);
+					controller.updateTimer(sessionLength);
+					$("#sessionLength").text(sessionLength);
+					$("#timer").text(sessionLength);
+				} else {
+					return;
+				}
 			}
 		});
 	},
@@ -149,6 +174,7 @@ view = {
 			if (time === 0){
 				return;
 			} else {
+				controller.setRunning(true);
 				view.timer(time, 0, 'session');
 			}
 		});
