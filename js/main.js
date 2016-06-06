@@ -56,6 +56,7 @@ view = {
 		this.breakAdd();
 		this.sessionSubtract();
 		this.sessionAdd();
+		this.startButton();
 	},
 
 	breakSubtract: function(){
@@ -114,7 +115,29 @@ view = {
 		});
 	},
 
+	startButton: function(){
+		$("#start").on("click", function(){
+			var time = controller.getTimer();
+			view.timer(time, 0);
+		});
+	},
+
+	timer: function(minutes, seconds){
+		$("#timer").text(minutes + " " + seconds);
+		if(minutes === 0 && seconds === 0){
+			$("#timer").text('Done!');
+			return;
+		} else if(seconds === 0){
+			minutes --;
+			seconds = 60;
+			setTimeout('timer(' + minutes + ',' + seconds + ')',1000);
+		}
+		seconds --;
+		setTimeout('timer(' + minutes + ',' + seconds + ')',1000);
+	}
+
 };
+
 
 
 // Run on start
