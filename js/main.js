@@ -71,13 +71,25 @@ view = {
 
 	countDown: function(minutes, seconds, breakOrSession){
 		var t;
-
 		if(controller.isRunning() === false){
 			clearTimeout(t);
 			return;
 		}
+		// minutesText and secondsText are used for display purposes
+		var minutesText;
+		var secondsText;
+		if(minutes < 10){
+			minutesText = '0'+minutes.toString();
+		} else {
+			minutesText = minutes;
+		}
+		if(seconds < 10){
+			secondsText = '0'+seconds.toString();
+		} else {
+			secondsText = seconds;
+		}
+		$("#timer").text(minutesText + " : " + secondsText);
 
-		$("#timer").text(minutes + " " + seconds);
 		if(minutes === 0 && seconds === 0){
 			var newTime = null;
 			if(breakOrSession === 'session'){
@@ -153,7 +165,7 @@ view = {
 				if (sessionLength > 0){
 					sessionLength --;	
 					controller.updateSessionLength(sessionLength);
-					controller.updateTimer(sessionLength);
+					controller.updateTimer(sessionLength, 0);
 					$("#sessionLength").text(sessionLength);
 					$("#timer").text(sessionLength);
 				} else {
@@ -212,7 +224,6 @@ view = {
 			$("#startStop").text("Start");
 		});
 	}
-
 
 };
 
