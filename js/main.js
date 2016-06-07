@@ -4,9 +4,11 @@
 model = {
 	breakLength: 0,
 	sessionLength: 0,
-	timer: 0,
+	timer: {
+		minutes: 0,
+		seconds: 0,
+	},
 	running: false,
-	stop: false
 };
 
 
@@ -28,8 +30,9 @@ controller = {
 		model.sessionLength = num;
 	},
 
-	updateTimer: function(num){
-		model.timer = num;
+	updateTimer: function(min, sec){
+		model.timer.minutes = min;
+		model.timer.seconds = sec;
 	},
 
 	setRunning: function(boolean){
@@ -66,7 +69,7 @@ view = {
 	},
 
 
-	timer: function(minutes, seconds, breakOrSession){
+	countDown: function(minutes, seconds, breakOrSession){
 		var t;
 
 		if(controller.isRunning() === false){
@@ -81,20 +84,21 @@ view = {
 				newTime = controller.getBreakLength();
 				$("#displayTimeHeader").text("Break");
 				// switch over to the break time
-				view.timer(newTime, 0, 'break');
+				view.countDown(newTime, 0, 'break');
 			} else if (breakOrSession === 'break'){
 				newTime = controller.getSessionLength(); 
 				$("#displayTimeHeader").text("Session");
 				// switch over to the session time
-				view.timer(newTime, 0, 'break');
+				view.countDown(newTime, 0, 'break');
 			}
 			return;
 		} else if(seconds === 0){
 			minutes --;
 			seconds = 60;
 		}
+		controller.updateTimer(minutes, seconds);
 		seconds --;
-		t = setTimeout('view.timer(' + minutes + ',' + seconds + ',"' + breakOrSession + '")',1000);
+		t = setTimeout('view.countDown(' + minutes + ',' + seconds + ',"' + breakOrSession + '")',1000);
 	},
 
 	createClickHandlers: function(){
@@ -167,7 +171,7 @@ view = {
 				if (sessionLength < 99){
 					sessionLength ++;	
 					controller.updateSessionLength(sessionLength);
-					controller.updateTimer(sessionLength);
+					controller.updateTimer(sessionLength, 0);
 					$("#sessionLength").text(sessionLength);
 					$("#timer").text(sessionLength);
 				} else {
@@ -180,15 +184,16 @@ view = {
 	startStopButton: function(){
 		$("#startStop").on("click", function(){
 			var time = controller.getTimer();
-			if (time === 0){
+			if (time.minutes === 0 && time.seconds === 0){
 					return;
 			}else if($(this).text() === "Start"){
 				model.stop = false;
 				$(this).text("Stop");
 					controller.setRunning(true);
-					view.timer(time, 0, 'session');	
+					view.countDown(time.minutes, time.seconds, 'session');	
 			}else if($(this).text() === "Stop"){
 				controller.setRunning(false);
+				$(this).text("Start");
 				return;
 			}
 		});
