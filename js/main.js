@@ -2,10 +2,10 @@
 ==============================*/
 
 model = {
-	breakLength: 0,
-	sessionLength: 0,
+	breakLength: 5,
+	sessionLength: 25,
 	timer: {
-		minutes: 0,
+		minutes: 25,
 		seconds: 0,
 	},
 	running: false,
@@ -107,6 +107,7 @@ view = {
 		view.sessionSubtract();
 		view.sessionAdd();
 		view.startStopButton();
+		view.resetButton();
 	},
 
 	breakSubtract: function(){
@@ -187,10 +188,10 @@ view = {
 			if (time.minutes === 0 && time.seconds === 0){
 					return;
 			}else if($(this).text() === "Start"){
-				model.stop = false;
+				// model.running = false;
 				$(this).text("Stop");
-					controller.setRunning(true);
-					view.countDown(time.minutes, time.seconds, 'session');	
+				controller.setRunning(true);
+				view.countDown(time.minutes, time.seconds, 'session');	
 			}else if($(this).text() === "Stop"){
 				controller.setRunning(false);
 				$(this).text("Start");
@@ -198,6 +199,19 @@ view = {
 			}
 		});
 	},
+
+	resetButton: function(){
+		$("#reset").on("click", function(){
+			controller.updateSessionLength(25);
+			controller.updateBreakLength(5);
+			controller.updateTimer(25,0);
+			controller.setRunning(false);
+			$("#breakLength").text(5);
+			$("#sessionLength").text(25);
+			$("#timer").text(25);
+			$("#startStop").text("Start");
+		});
+	}
 
 
 };
