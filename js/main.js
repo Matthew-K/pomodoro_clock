@@ -5,7 +5,8 @@ model = {
 	breakLength: 0,
 	sessionLength: 0,
 	timer: 0,
-	running: false
+	running: false,
+	stop: false
 };
 
 
@@ -64,7 +65,15 @@ view = {
 		view.createClickHandlers();
 	},
 
+
 	timer: function(minutes, seconds, breakOrSession){
+		var t;
+
+		if(controller.isRunning() === false){
+			clearTimeout(t);
+			return;
+		}
+
 		$("#timer").text(minutes + " " + seconds);
 		if(minutes === 0 && seconds === 0){
 			var newTime = null;
@@ -85,7 +94,7 @@ view = {
 			seconds = 60;
 		}
 		seconds --;
-		setTimeout('view.timer(' + minutes + ',' + seconds + ',"' + breakOrSession + '")',1000);
+		t = setTimeout('view.timer(' + minutes + ',' + seconds + ',"' + breakOrSession + '")',1000);
 	},
 
 	createClickHandlers: function(){
@@ -93,7 +102,7 @@ view = {
 		view.breakAdd();
 		view.sessionSubtract();
 		view.sessionAdd();
-		view.startButton();
+		view.startStopButton();
 	},
 
 	breakSubtract: function(){
@@ -168,14 +177,19 @@ view = {
 		});
 	},
 
-	startButton: function(){
-		$("#start").on("click", function(){
+	startStopButton: function(){
+		$("#startStop").on("click", function(){
 			var time = controller.getTimer();
 			if (time === 0){
+					return;
+			}else if($(this).text() === "Start"){
+				model.stop = false;
+				$(this).text("Stop");
+					controller.setRunning(true);
+					view.timer(time, 0, 'session');	
+			}else if($(this).text() === "Stop"){
+				controller.setRunning(false);
 				return;
-			} else {
-				controller.setRunning(true);
-				view.timer(time, 0, 'session');
 			}
 		});
 	},
