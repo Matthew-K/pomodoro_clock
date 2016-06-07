@@ -1,16 +1,55 @@
-#options{
-	margin-top: 25px;
+*{
+	color: #fff;
+	font-family: 'Droid Sans', sans-serif;
 }
 
-#options p{
-	font-size: 25px;
+body{
+	background: #1B1C1D;
+}
+
+.container{
+	margin-top: 40px;
+}
+
+h1{
+	font-size: 48px;
+	padding-top: 15px;
+	border-top: 2px solid #F0FF0F;
+}
+
+h1, h2{
+	font-family: 'Architects Daughter', cursive;
 }
 
 #displayTime{
 	margin-top: 25px;
-	font-size: 42px;
+	font-size: 72px;
+	color: #28FF0F;
+}
+
+#displayTimeHeader{
+	margin: 0;
+	font-family: 'Droid Sans', sans-serif;
+}
+
+#timer{
+	color: #28FF0F;
+}
+
+#options{
+	margin-top: 25px;
+	font-size: 25px;
+	-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
+}
+
+#options h2{
+	font-size: 16px;
 }
 
 .pointer:hover{
 	cursor:pointer;
+}
+
+#bottomBorder{
+	border-bottom: 2px solid #F0FF0F;
 }

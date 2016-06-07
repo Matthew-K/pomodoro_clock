@@ -88,7 +88,7 @@ view = {
 		} else {
 			secondsText = seconds;
 		}
-		$("#timer").text(minutesText + " : " + secondsText);
+		$("#timer").text(minutesText + ":" + secondsText);
 
 		if(minutes === 0 && seconds === 0){
 			var newTime = null;
