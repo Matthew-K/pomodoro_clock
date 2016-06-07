@@ -68,9 +68,14 @@ view = {
 		view.createClickHandlers();
 	},
 
-
 	countDown: function(minutes, seconds, breakOrSession){
+		// will be used for setTimeout
 		var t;
+		// sound effect to be used when timer reaches 0
+		var sound = new buzz.sound( 
+			"sound/Train_Horn_Low-SoundBible.com-1744689113", //from http://soundbible.com/1455-Train-Horn-Low.html
+			{formats: ["mp3"]}
+		);
 		if(controller.isRunning() === false){
 			clearTimeout(t);
 			return;
@@ -92,6 +97,7 @@ view = {
 
 		if(minutes === 0 && seconds === 0){
 			var newTime = null;
+			sound.play();
 			if(breakOrSession === 'session'){
 				newTime = controller.getBreakLength();
 				$("#displayTimeHeader").text("Break");
@@ -231,4 +237,3 @@ view = {
 
 // Run on start
 controller.init();
-
